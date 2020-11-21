@@ -4,7 +4,7 @@
 
 const fs = require('fs');
 const Discord = require('discord.js');
-const config = require('./config.env');
+const config = require('./config.json')
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -24,9 +24,9 @@ client.on('message', message => {
 
     //all you gotta do is make commands now, in ../cmds folder.
 
-    if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
+    if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
-    const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/);
+    const args = message.content.slice(config.prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
 
     if (!client.commands.has(command)) return;
@@ -35,13 +35,13 @@ client.on('message', message => {
         client.commands.get(command).execute(client, Discord, message, args);
     } catch (error) {
         console.error(error);
-        const r = new Discord.MessageEmbed()
+        let reply = new Discord.MessageEmbed()
             .setColor('#ffb347')
             .setTitle(`  ☃️   A bot   ☃️  `)
             .setDescription('An error happened; the command has failed to run. Contact the bot Administrator.')
             .setTimestamp()
-        message.channel.send(r);
+        message.channel.send(reply);
     }
 });
 
-client.login(process.env.TOKEN);
+client.login(config.token);
