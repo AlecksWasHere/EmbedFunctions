@@ -32,7 +32,7 @@ client.on('message', message => {
     if (!client.commands.has(command)) return;
 
     try {
-        client.commands.get(command).execute(client, Discord, message, args);
+        client.commands.get(command).execute(client, message, args);
     } catch (error) {
         console.error(error);
         let reply = new Discord.MessageEmbed()
